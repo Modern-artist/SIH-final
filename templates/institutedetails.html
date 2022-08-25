@@ -12,12 +12,12 @@
 </head>
 <body>
     <nav>
-        <div class="logo">
+        <a href="home" style="text-decoration:none;"><div class="logo">
             <img src="{% static 'img/logo.png' %}"
             alt="">
             <h2>UDAAN</h2>
-        </div>
-        <a href="home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Home</button></a>
+        </div></a>
+        {% comment %} <a href="home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Home</button></a> {% endcomment %}
     </nav>
     <main class="flex flex-col justify-evenly items-center h-full">
         <ul class="steps">
@@ -69,6 +69,8 @@
                             <input type="text" placeholder="Website" class="input input-bordered w-full " value="{{website}}" name="website" />
                         </div>
                     </div>
+                    <label class="label" for="gstin"><span>GSTIN Registration Number<span style="color:red;"> *</span></span></label>
+                    <input type="text" placeholder="GSTIN" class="input input-bordered w-full" name="gstin" value="{{gstin}}" />
                     <div class="flex justify-around w-full gap-1">
                         <div class="grid w-1/2">
                             <label class="label" for="password"><span>Password<span style="color:red;"> *</span></span></label>

@@ -15,7 +15,7 @@
             alt="">
             <h2>UDAAN</h2>
         </div>
-        <a href="home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Home</button></a>
+        {% comment %} <a href="home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Home</button></a> {% endcomment %}
     </nav>
     <main class="flex flex-col justify-evenly items-center h-full">
         <ul class="steps">
@@ -41,7 +41,7 @@
                     <label class="label" for="Gender">Other Marksheet<span style="color:red; font-size:80%;"> (If applicable) </span></label>
                     <input type="file" placeholder="10th Marksheet" class="input input-bordered w-full file:bg-slate-300 file:border-0 file:p-2 file:my-2" name="marksheet" required /> {% endcomment %}
                     <div class="card-actions w-full">
-                        <button class="btn btn-success btn-block">Next</button>
+                        <button class="btn btn-success btn-block">Submit</button>
                     </div>
                 </div>
             </div>

@@ -11,11 +11,11 @@
 <body>
     <nav>
         <div class="logo">
-            <img src="{% static 'img/logo.png' %}"
+            <a href="home" style="text-decoration:none;"><img src="{% static 'img/logo.png' %}"
             alt="">
             <h2>UDAAN</h2>
-        </div>
-        <a href="home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Home</button></a>
+        </div></a>
+        {% comment %} <a href="home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Home</button></a> {% endcomment %}
     </nav>
     <main class="flex flex-col justify-evenly items-center h-full">
         <ul class="steps">
@@ -51,7 +51,7 @@
                     <input type="file"  class="input input-bordered w-full file:bg-slate-300 file:border-0 file:p-2 file:my-2" name="fee" required />
 
                     <div class="card-actions w-full">
-                        <button class="btn btn-success btn-block">Next</button>
+                        <button class="btn btn-success btn-block">Submit</button>
                     </div>
                 </div>
             </div>

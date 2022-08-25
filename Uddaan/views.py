@@ -7,26 +7,26 @@ import mysql.connector
 
 mydb=mysql.connector.connect(host="localhost",user="root",password="",charset='utf8',database="udaan")
 
-def insert(regi_no, name, dob, gender, email, phone_no, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e, photo_name, income_name, address_name, marksheet_name):
+def insert(regi_no, name, dob, gender, email, income, phone_no, password, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e, photo_name, income_name, address_name, marksheet_name):
     cursor=mydb.cursor(buffered=True)
     mark=0
-    cursor.execute('INSERT INTO student VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (regi_no, name, dob, gender, email, phone_no, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e, photo_name, income_name, address_name, marksheet_name, mark))
+    cursor.execute('INSERT INTO student VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (regi_no, name, dob, gender, email, income, phone_no, password, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e, photo_name, income_name, address_name, marksheet_name, mark))
     print(cursor)
     mydb.commit()
 
-def insert2(regi_no, i_name, i_exam, i_email, i_phone_no, i_acc, ifc, password, i_website, brochure_name, identity_name, address_name, pan_name, fee_name, seat):
+def insert2(regi_no, i_name, i_exam, i_email, i_phone_no, i_acc, ifc, gstin, password, i_website, brochure_name, identity_name, address_name, pan_name, fee_name, seat):
     cursor=mydb.cursor(buffered=True)
     alloted='0'
-    cursor.execute('INSERT INTO institute VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (regi_no, i_name, i_exam, i_email, i_phone_no, i_acc, ifc, password, i_website, brochure_name, identity_name, address_name, pan_name, fee_name, seat, alloted))
+    cursor.execute('INSERT INTO institute VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (regi_no, i_name, i_exam, i_email, i_phone_no, i_acc, ifc, gstin, password, i_website, brochure_name, identity_name, address_name, pan_name, fee_name, seat, alloted))
     print(cursor)
     mydb.commit()
  
-def account(email, dob):
-    cursor=mydb.cursor()
-    cursor.execute('SELECT * FROM student WHERE email = %s and dob = %s', (email, dob))
+def account(email, password):
+    cursor=mydb.cursor(buffered=True)
+    cursor.execute('SELECT registration_no FROM student WHERE email = %s and password = %s', (email, password))
     account = cursor.fetchone()
     if account:
-        return True
+        return account[0]
     return False
 
 def i_account(email, password):
@@ -54,9 +54,9 @@ def i_reg_no():
     return '2022000000'
 
 def profile_info():
-    global session_email, session_dob
+    global session_email, session_password
     cursor=mydb.cursor(buffered=True)
-    cursor.execute('SELECT * FROM student WHERE email = %s and dob = %s', (session_email, session_dob))
+    cursor.execute('SELECT * FROM student WHERE email = %s and password = %s', (session_email, session_password))
     a=cursor.fetchone()
     return a
 
@@ -134,19 +134,36 @@ def questions():
         b.append(c)
         a=cursor.fetchone()
     return b
+def verified1(reg_no):
+    cursor=mydb.cursor(buffered=True)
+    cursor.execute('SELECT * FROM verify where verification_1 = "verified" and registration_no = %s', (reg_no,))
+    a=cursor.fetchone()
+    if a:
+        return True
+    return False
+def verified2(reg_no):
+    cursor=mydb.cursor(buffered=True)
+    cursor.execute('SELECT * FROM verify where verification_2 = "verified" and registration_no = %s', (reg_no,))
+    a=cursor.fetchone()
+    if a:
+        return True
+    return False
 
 loggedin=False
 i_loggedin=False
 a_loggedin=False
+reg_nu=''
 session_email=''
-session_dob=''
+session_password=''
 i_session_email=''
 i_session_password=''
 name=''
 dob=''
 gender=''
 email=''
+income=''
 phone_no=''
+password=''
 address=''
 pin=0
 district=''
@@ -176,7 +193,8 @@ i_email=''
 i_acc=''
 ifc=''
 seat=''
-password=''
+gstin=''
+i_password=''
 i_phone_no=''
 
 def home(request):
@@ -225,13 +243,17 @@ def notice(request):
         return redirect('a_login')
 
 def personal_details(request):
-    global name, dob, gender, email, phone_no
+    global name, dob, gender, email, income, phone_no, password
     msg=''
     name1=request.POST.get('name','')
     dob1=request.POST.get('dob','')
     gender1=request.POST.get('gender','')
     email1=request.POST.get('email','')
+    income1=request.POST.get('income','')
     phone_no1=request.POST.get('phone_no','')
+    password1=request.POST.get('password','')
+    c_password1=request.POST.get('c_password','')
+    
     if name1 != '' and dob1 != '' and gender1 != '' and email1 != '' and phone_no1 != '':
         if not re.match(r'[^@]+@[^@]+\.[^@]+', email1):
             msg = 'Invalid email address!'
@@ -241,6 +263,8 @@ def personal_details(request):
             msg = 'Gender must contain only characters'
         elif len(phone_no1)!=10:
             msg = 'Phone Number must contain only 10 digits!'
+        elif password1 != c_password1:
+            msg = 'Confirm password does not match'
         # elif account(email):
         #     msg = 'Already registeration is done from this Email!'
         else:
@@ -249,30 +273,41 @@ def personal_details(request):
             gender=gender1
             email=email1
             phone_no=phone_no1
+            password=password1
+            income=income1
             return redirect('c_details')
     param={'msg':msg, 'name':name1,'dob':dob1,'gender':gender1, 'email':email1, 'phone_no':phone_no1}
     return render(request,'personalddetails.html',param)
 
 def login(request):
-    global loggedin, session_email, session_dob
+    global loggedin, session_email, session_password, reg_nu
     msg=''
     email=request.POST.get('email','none')
-    dob=request.POST.get('dob','none')
+    password=request.POST.get('password','none')
     param={'msg':msg}
-    if(email!='none' and dob!='none'):
-        if account(email,dob):
+    if(email!='none' and password!='none'):
+        print(email,password)
+        if account(email,password):
             loggedin=True
+            reg_nu=account(email,password)
             session_email=email
-            session_dob=dob
-            return redirect('profile')
+            session_password=password
+            if not verified1(reg_nu):
+                return redirect('verify')
+            elif verified1(reg_nu):
+                return render(request, 'wait.html')
+            elif verified2(reg_nu):
+                return redirect('profile')
         else:
             msg = 'Incorrect username or password'
     param={'msg':msg,'name':'Student ','url':"register",'url1':"login"}
     return render(request,'login.html',param)
 
 def logout(request):
-    global loggedin
+    global loggedin, session_email, session_password
     loggedin=False
+    session_email=''
+    session_password=''
     return redirect('home')
 
 def i_login(request):
@@ -320,7 +355,7 @@ def a_logout(request):
     return redirect('a_login')
 
 def communication_details(request):
-    global name, dob, gender, email, phone_no, address, pin, district, state,name_10, board_10, year_10, omarks_10,tmarks_10, percentage_10,name_12, board_12, year_12, omarks_12,tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e
+    global name, dob, gender, email, income, phone_no, password, address, pin, district, state,name_10, board_10, year_10, omarks_10,tmarks_10, percentage_10,name_12, board_12, year_12, omarks_12,tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e
     msg=''
     address1=request.POST.get('address','')
     pin1=request.POST.get('pin','')
@@ -342,7 +377,7 @@ def communication_details(request):
     return render(request,'communicationdetails.html',param)
 
 def education_details(request):
-    global name, dob, gender, email, phone_no, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e
+    global name, dob, gender, email, income, phone_no, password, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e
     name_101=request.POST.get('name_10','')
     board_101=request.POST.get('board_10','')
     year_101=request.POST.get('year_10',0)
@@ -391,7 +426,7 @@ def education_details(request):
     return render(request,'educationdetails.html',param)
 
 def document_upload(request):
-    global name, dob, gender, email, phone_no, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e
+    global name, dob, gender, email, income, phone_no, password, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e
     if request.method == "POST":
         if name == '' and dob == '' and gender == '' and email == '' and phone_no == '':
             return redirect('p_details')
@@ -403,23 +438,56 @@ def document_upload(request):
             regi_no=int(reg_no())+1
             photo=request.FILES['photo']
             photo_name=str(regi_no)+"_photo."+(photo.name).split('.')[-1]
-            income=request.FILES['income']
+            income_file=request.FILES['income']
             print(photo)
-            income_name=str(regi_no)+"_income."+(income.name).split('.')[-1]
+            income_name=str(regi_no)+"_income."+(income_file.name).split('.')[-1]
             addressf=request.FILES['address']
             address_name=str(regi_no)+"_address."+(addressf.name).split('.')[-1]
             marksheet=request.FILES['marksheet']
             marksheet_name=str(regi_no)+"_marksheet."+(marksheet.name).split('.')[-1]
             fs = FileSystemStorage()
             fs.save(photo_name,photo)
-            fs.save(income_name,income)
+            fs.save(income_name,income_file)
             fs.save(address_name,addressf)
             fs.save(marksheet_name,marksheet)
-            insert(regi_no, name, dob, gender, email, phone_no, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e, photo_name, income_name, address_name, marksheet_name)
+            insert(regi_no, name, dob, gender, email, income, phone_no, password, address, pin, district, state, name_10, board_10, year_10, omarks_10, tmarks_10, percentage_10, name_12, board_12, year_12, omarks_12, tmarks_12, percentage_12, name_e, board_e, year_e, omarks_e, tmarks_e, percentage_e, photo_name, income_name, address_name, marksheet_name)
+            cursor=mydb.cursor(buffered=True)
+            cursor.execute("INSERT INTO verify VALUES(%s, %s, %s)",(regi_no,'',''))
+            reg_no=regi_no
+            return redirect('verify')
     return render(request,'uploaddocument.html')
 
+def verify(request):
+    aadhar=request.POST.get("aadhar",'')
+    msg=''
+    if aadhar != '':
+        if len(aadhar) != 12:
+            msg='Aadhar Number Must contain 12 digits'
+        else:
+            return redirect('verify_otp')
+    param={'msg':msg}
+    return render(request,'aadhar.html',param)
+
+def verify_otp(request):
+    global reg_no
+    otp=request.POST.get("otp",'')
+    msg=''
+    if otp != '' or not verified1(reg_nu):
+        if len(otp) != 4:
+            msg='OTP Must contain 4 digits'
+        else:
+            cursor=mydb.cursor(buffered=True)
+            v="verified"
+            cursor.execute("UPDATE verify SET verification_1 = %s where registration_no = %s",(v,reg_nu))
+            return render(request,'wait.html')
+    elif otp == '':
+        if not verified1(reg_nu):
+            return redirect('verify')
+    param={'msg':msg}
+    return render(request,'otp.html',param)
+
 def institute_details(request):
-    global i_name, i_exam, i_website, i_email, i_phone_no, i_acc, ifc, seat, password
+    global i_name, i_exam, i_website, i_email, i_phone_no, i_acc, ifc, seat, i_password, gstin
     msg=''
     i_name1=request.POST.get('name','')
     i_exam1=request.POST.get('exam','')
@@ -429,6 +497,7 @@ def institute_details(request):
     i_acc1=request.POST.get('account','')
     ifc1=request.POST.get('ifc','')
     seat1=request.POST.get('seat','')
+    gstin1=request.POST.get('gstin','')
     password1=request.POST.get('password','')
     c_password1=request.POST.get('c_password','')
     param={'msg':msg, 'name':i_name1,'exam':i_exam1, 'email':i_email1, 'phone_no':i_phone_no1,'website':i_website1, 'password':password1,'c_password':c_password1}
@@ -441,6 +510,8 @@ def institute_details(request):
             msg = 'Confirm password does not match'
         elif len(i_phone_no1)!=10:
             msg = 'Phone Number must contain only 10 digits!'
+        elif len(gstin1)!=15:
+            msg = 'GSTIN Registration Number must contain only 15 characters!'
         # elif account(email):
         #     msg = 'Already registeration is done from this Email!'
         else:
@@ -452,13 +523,14 @@ def institute_details(request):
             i_acc=i_acc1
             ifc=ifc1
             seat=seat1
-            password=password1
+            i_password=password1
+            gstin=gstin1
             return redirect('i_document')
     param={'msg':msg, 'name':i_name1,'exam':i_exam1, 'email':i_email1, 'phone_no':i_phone_no1,'website':i_website1, 'password':password1,'c_password':c_password1}
     return render(request,'institutedetails.html', param)
 
 def i_document_upload(request):
-    global i_name, i_exam, i_website, i_email, i_phone_no, i_acc, ifc, seat, password
+    global i_name, i_exam, i_website, i_email, i_phone_no, i_acc, ifc, seat, i_password, i_loggedin, i_session_email, i_session_password, gstin
     if request.method == "POST":
         if i_name == '' and i_exam == '' and i_email == '' and i_phone_no == '':
             return redirect('i_details')
@@ -480,15 +552,20 @@ def i_document_upload(request):
             fs.save(address_name,address)
             fs.save(pan_name,pan)
             fs.save(fee_name,fee)
-            insert2(regi_no, i_name, i_exam, i_email, i_phone_no, i_acc, ifc, password, i_website, brochure_name, identity_name, address_name, pan_name, fee_name, seat)
+            insert2(regi_no, i_name, i_exam, i_email, i_phone_no, i_acc, ifc, gstin, i_password, i_website, brochure_name, identity_name, address_name, pan_name, fee_name, seat)
+            return redirect('i_profile')
     return render(request,'uploadinstitutedoc.html')
 
 def profile(request):
-    global loggedin
+    global loggedin, reg_nu
+    if not verified1(reg_nu):
+        return redirect('verify')
+    elif verified1(reg_nu):
+        return render(request, 'wait.html')
     if loggedin:
         info=profile_info()
-        photo='media/'+info[28]
-        param={'reg_no':info[0],'name':info[1],'dob':info[2],'gender':info[3],'email':info[4],'phone_no':info[5],'address':info[6],'pin':info[7],'district':info[8],'state':info[9],'name_10':info[10],'board_10':info[11],'year_10':info[12],'omarks_10':info[13],'tmarks_10':info[14],'percentage_10':info[15],'name_12':info[16],'board_12':info[17],'year_12':info[18],'omarks_12':info[19],'tmarks_12':info[20],'percentage_12':info[21],'name_e':info[22],'board_e':info[23],'year_e':info[24],'omarks_e':info[25],'tmarks_e':info[26],'percentage_e':info[27], 'photo_url':photo}
+        photo='media/'+info[30]
+        param={'reg_no':info[0],'name':info[1],'dob':info[2],'gender':info[3],'email':info[4],'income':info[5],'phone_no':info[6],'address':info[8],'pin':info[9],'district':info[10],'state':info[11],'name_10':info[12],'board_10':info[13],'year_10':info[14],'omarks_10':info[15],'tmarks_10':info[16],'percentage_10':info[17],'name_12':info[18],'board_12':info[19],'year_12':info[20],'omarks_12':info[21],'tmarks_12':info[22],'percentage_12':info[23],'name_e':info[24],'board_e':info[25],'year_e':info[26],'omarks_e':info[27],'tmarks_e':info[28],'percentage_e':info[29], 'photo_url':photo}
         return render(request, 'profilepg.html', param)
     return redirect('login')
 
@@ -538,24 +615,6 @@ def i_profile(request):
     global i_loggedin
     if i_loggedin:
         info=i_profile_info()
-        param={'reg_no':info[0],'name':info[1],'exam':info[2],'email':info[3],'phone_no':info[4],'account':info[5],'ifc':info[6],'website':info[8]}
+        param={'reg_no':info[0],'name':info[1],'exam':info[2],'email':info[3],'phone_no':info[4],'account':info[5],'ifc':info[6],'gstin':info[7],'website':info[9]}
         return render(request, 'i_profile.html', param)
     return redirect('i_login')
-
-def exam(request):
-    global loggedin, session_email
-    if loggedin:
-        q=questions()
-        mark=0
-        param={'questions':q,'len':len(q)}
-        answer=request.POST.get('ans','')
-        if(answer != ''):
-            answer=answer.split(":")
-            for i in range(len(q)):
-                if(int(answer[i+1][0])==int(q[i]['no'])):
-                    mark=mark+1
-            print(mark)
-            insert_mark(session_email, mark)
-            return redirect('dashboard')
-        return render(request, 'exam.html', param)
-    return redirect('login')

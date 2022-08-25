@@ -37,14 +37,15 @@ urlpatterns = [
     path('c_details',views.communication_details,name='c_details'),
     path('e_details',views.education_details,name='e_details'),
     path('u_document',views.document_upload,name='u_document'),
+    path('verify',views.verify,name='verify'),
+    path('verify_otp',views.verify_otp,name='verify_otp'),
     path('i_details',views.institute_details,name='i_details'),
     path('i_document',views.i_document_upload,name='i_document'),
     path('profile',views.profile,name='profile'),
     path('i_profile',views.i_profile,name='i_profile'),
     path('dashboard',views.dashboard,name='dashboard'),
     path('council',views.council,name='council'),
-    path('marks',views.marks,name='marks'),
-    path('exam',views.exam,name='exam')
+    path('marks',views.marks,name='marks')
 ]
 
 if settings.DEBUG:
