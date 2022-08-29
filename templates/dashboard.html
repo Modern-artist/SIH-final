@@ -13,16 +13,17 @@
 
 <body>
     <nav class="navlinks">
-        <div class="logo">
-            <img src="{% static 'img/logo.png' %}"
-                alt="">
-            <h2>logo</h2>
-        </div>
+        <a href="home" style="text-decoration: none">
+            <div class="logo">
+              <img src="{% static 'img/logo.png' %}" alt="" />
+            </div></a
+          >
         <div class="nav">
             <a href="">Home</a><a href="">Contact</a><a href="">About us</a>
         </div>
         <div class="btns">
             <a href="profile" style="text-decoration:none;"><button type="button" class="btn btn-primary">Profile</button></a>
+            <a href="" style="text-decoration:none;"><button type="button" class="btn btn-warning">Renew</button></a>
         </div>
     </nav>
     <div class="mainpg">
@@ -37,7 +38,7 @@
         </div>
         <div class="details">
             <div class="info">
-            <h2 class="topic">Schoolarship Information</h2>
+            <h2 class="topic">Allotment Information</h2>
                 <div class="cards">
                     <div class="questions">
                         <span class="ques">Registration Number</span>
@@ -58,7 +59,7 @@
                 <h2 class="topic">Important Links
                 </h2>
                 <div class="cards">
-                    <div class="questions">
+                    {% comment %} <div class="questions">
                         <span class="ques">link1</span>
                         <span class="ques">link2</span>
                         <span class="ques">link3</span>
@@ -73,7 +74,7 @@
                         <span class="ans">{{link}}</span>
                         <span class="ans">{{link}}</span>
                         <span class="ans">{{link}}</span>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
             

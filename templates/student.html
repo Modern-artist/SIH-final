@@ -22,20 +22,40 @@
           <h2>logo</h2>
         </div>
         <div class="btns">
-          <a href="a_home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Back to Home</button></a>
+          <a href="i_profile" style="text-decoration:none;"><button type="button" class="btn btn-primary">Back to Profile</button></a>
       </div>
       
     </nav>
     <div class="al_cards">
       {% for n in student %}
       <div class="pro_card">
-        <img src="media/{{n.photo}}" alt="" />
-        <h4>{{n.name}}</h4>
-        <span>{{n.email}}</span>
-        <span>{{n.phone_no}}</span>
-        <span>{{n.address}}</span>
+        <form action="ver" method="post">
+          {%csrf_token%}
+          <img src="media/{{n.photo}}" alt="" />
+          <h4>{{n.name}}</h4>
+          <span>{{n.email}}</span>
+          <span>{{n.phone_no}}</span>
+          <span>{{n.address}}</span>
+          <input id="verify" name="verify" style="display:none;">
+          <button type="submit" id="btn" style="display:none;"></button>
+        </form>
+        {% if n.cond %}
+          {% if n.cond1 %}
+            <button class="btn squrbtn btn-info">Verified</button>
+          {% else %}
+            <button class="btn squrbtn btn-success">In Progress</button>
+          {% endif %}
+        {% else %}
+          <button class="btn squrbtn btn-warning" onclick="clicking({{n.reg}})">Verify</button>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
+    <script>
+      function clicking(id){
+        document.getElementById("verify").value=id;
+        document.getElementById("btn").click();
+      }
+    </script>
   </body>
 </html>

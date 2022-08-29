@@ -25,7 +25,8 @@ urlpatterns = [
     path('home',views.home,name='home'),
     path('a_home',views.a_home,name='a_home'),
     path('student',views.s_list,name='student'),
-    path('institute',views.i_list,name='student'),
+    path('a_student',views.as_list,name='a_student'),
+    path('institute',views.i_list,name='institute'),
     path('notice',views.notice,name='notice'),
     path('login',views.login,name='login'),
     path('logout',views.logout,name='logout'),
@@ -45,7 +46,14 @@ urlpatterns = [
     path('i_profile',views.i_profile,name='i_profile'),
     path('dashboard',views.dashboard,name='dashboard'),
     path('council',views.council,name='council'),
-    path('marks',views.marks,name='marks')
+    path('marks',views.marks,name='marks'),
+    path('ver',views.ver,name='ver'),
+    path('accept',views.accept,name='accept'),
+    path('decline',views.decline,name='decline'),
+    path('ver1',views.ver1,name='ver1'),
+    path('accept1',views.accept1,name='accept1'),
+    path('decline1',views.decline1,name='decline1'),
+    path('fund_req',views.fund_req,name='fund_req')
 ]
 
 if settings.DEBUG:

@@ -43,12 +43,11 @@ body{
     font-size: 1.2rem;
     transition: 0.3s ease-in-out;
 }
-nav a:hover{
+/* nav a:hover{
     scale: 1.05;
     font-weight: 400;
-    /* background-color: #ffb451; */
     box-shadow: 3px 3px 10px rgba(36, 35, 35, 0.25);
-}
+} */
 .profile img {
     width: 10vw;
     border-radius: 99px;
@@ -160,20 +159,30 @@ nav a:hover{
 
 .adm{
     /* width: 100vw; */
-    /* display: flex; */
+    display: flex;
+    /* background-image: url('../img/adm.jpg'); */
+    /* background-repeat: no-repeat;
+    background-size: cover;
+    height: 95vh; */
+    /* justify-content: center; */
+
 }
 .admcard{
     display: flex;
-    /* width: 90vw; */
+    width: 40vw;
     /* height: 600px; */
-    /* flex-direction: column; */
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
     background-color: white;
-    margin: 40px;
+    margin: 20px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 8px;
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     color: rgb(37, 37, 37);
+    height: fit-content;
     
 }
 .admcard:hover{
@@ -183,7 +192,7 @@ nav a:hover{
 .admcard img{
     /* width: 100%; */
     padding: 10px;
-    width: 25vw;
+    width: 13vw;
     border-radius: 20px;
 
     /* height: 50%; */

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ins_pg</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/adm.css' %}" />
+  </head>
+
+  <body>
+    <nav class="navlinks">
+      
+        <div class="logo">
+          <img src="{% static 'img/logo.png'%}" alt="" />
+          <h2>logo</h2>
+        </div>
+        <div class="btns">
+          <a href="a_home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Back to Home</button></a>
+      </div>
+      
+    </nav>
+    <div class="al_cards">
+      {% for n in student %}
+      <div class="pro_card">
+        <form action="ver1" method="post">
+          {%csrf_token%}
+          <img src="media/{{n.photo}}" alt="" />
+          <h4>{{n.name}}</h4>
+          <span>{{n.email}}</span><br>
+          <span>{{n.phone_no}}</span><br>
+          <span>{{n.address}}</span><br>
+          <span><b>{{n.institute}}</b></span><br>
+          <input id="verify" name="verify" style="display:none;">
+          <button type="submit" id="btn" style="display:none;"></button>
+        </form>
+        {% if n.cond1 %}
+          <button class="btn squrbtn btn-info">Verified</button>
+        {% else %}
+          <button class="btn squrbtn btn-warning" onclick="clicking({{n.reg}})">Verify</button>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <script>
+      function clicking(id){
+        document.getElementById("verify").value=id;
+        document.getElementById("btn").click();
+      }
+    </script>
+  </body>
+</html>

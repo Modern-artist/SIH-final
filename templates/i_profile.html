@@ -19,8 +19,8 @@
             <h2>logo</h2>
         </div>
         <div class="btns">
+            <a href="fund_req" style="text-decoration:none;"><button type="button" class="btn btn-outline-warning">Resquest Fund</button></a>
             <a href="i_logout" style="text-decoration:none;"><button type="button" class="btn btn-primary">Logout</button></a>
-            {% comment %} <button type="button" class="btn btn-outline-warning">Warning</button> {% endcomment %}
         </div>
     </nav>
     <div class="mainpg">
@@ -64,14 +64,10 @@
                     <div class="questions">
                         <span class="ques">IFSC Code</span>
                         <span class="ques">Account Number</span>
-                        <span class="ques">Total Payment</span>
-                        <span class="ques">Payment Left</span>
                     </div>
                     <div class="answers">
                         <span class="ans">{{ifc}}</span>
                         <span class="ans">{{account}}</span>
-                        <span class="ans">{{t_payment}}</span>
-                        <span class="ans">{{l_payment}}</span>
                     </div>
                 </div>
             </div>
@@ -82,16 +78,18 @@
                         <h2 class="topic">Student</h2>
                         <div class="edudata">
                             <div class="questions">
-                                <span class="ques">Number of Students</span>
+                                <span class="ques">Number of Students applied of scholarship</span>
                             </div>
                             <div class="answers">
-                                <span class="ans">{{nos}}</span>
+                                <span class="ans">{{number}}</span>
                             </div>
-                            <a href="dashboard" style="text-decoration:none;"><button type="button" class="btn btn-primary">Student Details</button></a>
+                        <a href="student" style="text-decoration:none;"><button type="button" class="btn btn-primary">View</button></a>
+
+                            {% comment %} <a href="student" style="text-decoration:none;"><button type="button" class="btn btn-primary">Student Details</button></a> {% endcomment %}
                         </div>
                     </div>
                 </div>
-                <div class="eduinfo">
+                {% comment %} <div class="eduinfo">
                     <div class="educards">
                         <h2 class="topic">Intermediate</h2>
                         <div class="edudata">
@@ -113,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
 </body>

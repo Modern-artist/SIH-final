@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    {%load static%}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homecss.css' %}">
+    <style>
+        .navlinks {
+            position: static;
+            width:98vw;
+        }
+        table, th, td {
+            margin: 50px 2vw;
+            border: 2px solid black;
+            border-collapse: collapse;
+            width:96vw;
+        }
+        th, td{
+            margin: 5px;
+        }
+
+        .sub_form{
+            width: 20vw;
+            padding: 10px;
+        }
+        .logo img{
+            border-radius: 99px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navlinks">
+        <div class="logo">
+            <img src="{% static 'img/logo.png' %}"
+                alt="">
+            <h2>logo</h2>
+        </div>
+        <div class="btns">
+            <a href="a_home" style="text-decoration:none;"><button type="button" class="btn btn-primary">Back to Home</button></a>
+        </div>
+    </nav>
+    <form method="post" action="marks">
+        {% csrf_token %}
+        <center><p style="color:darkgreen; font-weight:500;">{{msg}}</p></center>
+        <table>
+            <tr>
+                <th>Marks Obtained (10th Board)</th>
+                <th>Total Marks (10th Board)</th>
+                <th>Percentage (10th Board)</th>
+                <th>Marks Obtained (Scholarship Test)</th>
+                <th>Total Marks (Scholarship Test)</th>
+                <th>Offer</th>
+            </tr>
+            {% for n in student %}
+                <tr>
+                    <td>{{n.omarks_10}}</td>
+                    <td>{{n.tmarks_10}}</td>
+                    <td>{{n.percentage_10}}</td>
+                    <td>{{n.marks}}</td>
+                    <td>100</td>
+                    <td>{{n.phone_no}}</td>
+                    <td><input name={{n.reg}} value={{n.mark}} required></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <center>
+        <button class="btn btn-info sub_form" type="submit">Submit</button>
+        <center>
+    </form>
+</body>
+
+</html>

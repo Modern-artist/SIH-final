@@ -8,6 +8,7 @@
     <title>Personal Details</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/prem.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 
 <body>
@@ -33,9 +34,21 @@
                     <label class="label" for="name"><span>Full Name<span style="color:red;"> *</span></span></label>
                     <input type="text" placeholder="Name" class="input input-bordered w-full" name="name" value="{{name}}" />
                     <p style="color:red; padding-left:2px; font-size:85%;">(Please enter Full Name as per AADHAR)</p>
-                    <label class="label" for="date"><span>Date of Birth<span style="color:red;"> *</span></span></label>
-                    <input type="date" placeholder="Email" class="input input-bordered w-full" name="dob" value="{{dob}}" />
-                    <p style="color:red; padding-left:2px; font-size:85%;">(Please enter Date of Birth as per AADHAR)</p>
+                    <div class="flex justify-around w-full gap-1">
+                        <div class="grid w-1/2">
+                            <label class="label" for="date"><span>Date of Birth<span style="color:red;"> *</span></span></label>
+                            <input type="date" placeholder="Email" class="input input-bordered w-full" name="dob" value="{{dob}}" />
+                            <p style="color:red; padding-left:2px; font-size:85%;">(Please enter Date of Birth as per AADHAR)</p>
+                        </div>
+                        <div class="grid w-1/2">
+                            <label class="label" for="institute"><span>Institute<span style="color:red;"> *</span></span></label>
+                            <select class="pref" type="radio" class="data_i glass" name="institute" required>
+                                {% for n in institute %}
+                                    <option value={{n.i_reg}}>{{n.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                     <div class="flex justify-around w-full gap-1">
                         <div class="grid w-1/2">
                             <label class="label" for="Gender"><span>Gender<span style="color:red;"> *</span></span></label>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ins_pg</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/notice.css' %}" />
+
+    <!-- <link rel="stylesheet" href="adm.css" /> -->
+
+    <!-- <link rel="stylesheet" href="../static/css/new.css"> -->
+  </head>
+
+  <body>
+    <nav>
+      <div class="logo">
+        <img src="../static/img/logo.png" alt="logo" />
+      </div>
+    </nav>
+    
+    <form method="post" action="fund_req">
+      {% csrf_token %}
+        <label for="session">
+            Session
+            <input type="text" name="session"  required>
+        </label>
+        <label for="nos">
+          Number of Students
+          <input type="text" name="nos" placeholder="" required>
+        </label>
+        <label for="fps">
+          Fund per Student
+          <input type="text" name="fps"  required>
+        </label>
+        <button type="submit">Request</button>
+    </form>
+    
+  </body>
+</html>
